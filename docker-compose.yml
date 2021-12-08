@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 1q2w3e4r5t
+    ports:
+      - 5432:5432

@@ -1,0 +1,33 @@
+package com.example.lab1.models;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+@Table(name = "employee")
+@Data
+@NamedQueries({
+        @NamedQuery(name = "Employee.getAll", query = "select e from Employee e")
+})
+public class Employee implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Integer ID;
+    @Column(name = "fullName")
+    private String fullName;
+    @Column(name = "post")
+    private String post;            // Должность
+    @Column(name = "experience")
+    private Integer experience;     // опыт работы
+    @Column(name = "phone")
+    private String phone;           // Телефон
+    @Column(name = "email")
+    private String email;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Order> orders;
+}
