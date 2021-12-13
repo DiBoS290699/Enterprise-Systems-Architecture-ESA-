@@ -56,7 +56,9 @@
 
 <script>
 // Change this import in respect to the technology currently using in the backend 
-import { eeGetAll, eeDeleteItem, eeAddNewItem, eeUpdateItem } from "../endpoints/employee_table_endpoints";
+// import { eeGetAll, eeDeleteItem, eeAddNewItem, eeUpdateItem } from "../endpoints/employee_table_endpoints";
+import { springGetAll, springDeleteItem, springAddNewItem, springUpdateItem } from "../endpoints/employee_table_endpoints";
+
 import DialogExample from "./DialogExample.vue";
 
 export default {
@@ -81,7 +83,8 @@ export default {
       // Placeholder
     },
     getAllRows() {
-      eeGetAll().then((response) => {
+      springGetAll().then((response) => {
+      // eeGetAll().then((response) => {
           this.table_data = response.data;
         })
         .catch((error) => {
@@ -89,8 +92,10 @@ export default {
         });
     },
     deleteRow(itemId) {
-      eeDeleteItem(itemId)
-        .then(() => {
+      springDeleteItem(itemId)
+          .then(() => {
+      // eeDeleteItem(itemId)
+      //   .then(() => {
           this.getAllRows();
         })
         .catch((error) => {
@@ -112,8 +117,10 @@ export default {
       const body = {'fullName': item.fullName, "post": item.post, "experience":item.experience, 'phone': item.phone, 'email': item.email}
       // params = {'childId': 1}
       const params = {}
-      eeUpdateItem(this.editingItemIndex, params, body)
-        .then((response) => {
+      springUpdateItem(this.editingItemIndex, params, body)
+          .then((response) => {
+      // eeUpdateItem(this.editingItemIndex, params, body)
+      //   .then((response) => {
           console.log(response.data);
           this.getAllRows();
         })
@@ -137,8 +144,10 @@ export default {
       const body = {'fullName': item.fullName, "post": item.post, "experience":item.experience, 'phone': item.phone, 'email': item.email}
       // params = {'childId': 1}
       const params = {}
-      eeAddNewItem(params, body)
-        .then((response) => {
+      springAddNewItem(params, body)
+          .then((response) => {
+      // eeAddNewItem(params, body)
+      //   .then((response) => {
           console.log(response.data);
           this.getAllRows();
         })
