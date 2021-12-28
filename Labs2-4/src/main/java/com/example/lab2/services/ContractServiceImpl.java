@@ -1,7 +1,9 @@
 package com.example.lab2.services;
 
+import com.example.lab2.jms.EventListenerFactory;
 import com.example.lab2.jms.Sender;
 import com.example.lab2.models.Contract;
+import com.example.lab2.repositories.ClientRepository;
 import com.example.lab2.repositories.ContractRepository;
 import com.example.lab2.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,14 @@ public class ContractServiceImpl implements ContractService{
 
     private final ContractRepository repository;
 
-    @Autowired
     private Sender sender;
 
     @Autowired
-    public ContractServiceImpl(ContractRepository repository) {
+    public ContractServiceImpl(ContractRepository repository, EventListenerFactory factory, Sender send) {
         this.repository = repository;
+        sender = send;
+        sender.subscribe(factory.createEmailLoggerListener());
+        sender.subscribe(factory.createEventLoggerListener());
     }
 
     @Override

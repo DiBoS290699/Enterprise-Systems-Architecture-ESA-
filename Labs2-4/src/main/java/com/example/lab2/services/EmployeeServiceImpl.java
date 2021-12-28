@@ -1,7 +1,9 @@
 package com.example.lab2.services;
 
+import com.example.lab2.jms.EventListenerFactory;
 import com.example.lab2.jms.Sender;
 import com.example.lab2.models.Employee;
+import com.example.lab2.repositories.ClientRepository;
 import com.example.lab2.repositories.EmployeeRepository;
 import com.example.lab2.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repository;
 
-    @Autowired
     private Sender sender;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository repository) {
+    public EmployeeServiceImpl(EmployeeRepository repository, EventListenerFactory factory, Sender send) {
         this.repository = repository;
+        sender = send;
+        sender.subscribe(factory.createEmailLoggerListener());
+        sender.subscribe(factory.createEventLoggerListener());
     }
 
     @Override

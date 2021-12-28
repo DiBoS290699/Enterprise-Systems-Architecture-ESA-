@@ -1,5 +1,6 @@
 package com.example.lab2.services;
 
+import com.example.lab2.jms.EventListenerFactory;
 import com.example.lab2.jms.Sender;
 import com.example.lab2.models.Client;
 import com.example.lab2.repositories.ClientRepository;
@@ -19,12 +20,14 @@ public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository repository;
 
-    @Autowired
     private Sender sender;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository repository) {
+    public ClientServiceImpl(ClientRepository repository, EventListenerFactory factory, Sender send) {
         this.repository = repository;
+        sender = send;
+        sender.subscribe(factory.createEmailLoggerListener());
+        sender.subscribe(factory.createEventLoggerListener());
     }
 
     @Override
