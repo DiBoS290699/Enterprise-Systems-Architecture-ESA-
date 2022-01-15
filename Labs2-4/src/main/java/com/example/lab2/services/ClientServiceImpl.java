@@ -1,15 +1,16 @@
 package com.example.lab2.services;
 
-import com.example.lab2.jms.EventListenerFactory;
 import com.example.lab2.jms.Sender;
 import com.example.lab2.models.Client;
 import com.example.lab2.repositories.ClientRepository;
 import com.example.lab2.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.jms.JMSException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +24,9 @@ public class ClientServiceImpl implements ClientService{
     private Sender sender;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository repository, EventListenerFactory factory, Sender send) {
+    public ClientServiceImpl(ClientRepository repository, JmsTemplate jmsTemplate) throws JMSException {
         this.repository = repository;
-        sender = send;
-        sender.subscribe(factory.createEmailLoggerListener());
-        sender.subscribe(factory.createEventLoggerListener());
+        sender = new Sender(jmsTemplate);
     }
 
     @Override
