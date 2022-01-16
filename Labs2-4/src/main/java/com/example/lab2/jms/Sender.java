@@ -13,17 +13,12 @@ import java.util.ArrayList;
 //@Scope("prototype")
 public class Sender {
 
-    ArrayList<EventListener> listenerList = new ArrayList<>();
     JmsTemplate jmsTemplate;
     Topic eventTopic;
 
     public Sender(JmsTemplate jmsTemplate) throws JMSException {
         this.jmsTemplate = jmsTemplate;
         this.eventTopic = jmsTemplate.getConnectionFactory().createConnection().createSession().createTopic("event");
-    }
-
-    public void subscribe(EventListener listener) {
-        listenerList.add(listener);
     }
 
     public void updateListeners(Event event) {
